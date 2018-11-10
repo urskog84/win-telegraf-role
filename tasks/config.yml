@@ -1,0 +1,8 @@
+---
+#config telegraf
+- name: copy telegraf.conf
+  win_copy:
+    src: telegraf.conf
+    dest: C:\Program Files\telegraf\telegraf.conf
+  notify:
+    - restart telegraf service

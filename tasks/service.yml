@@ -1,0 +1,6 @@
+---
+- name: start telegraf service 
+  win_service:
+    name: telegraf
+    start_mode: auto
+    state: started

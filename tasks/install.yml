@@ -1,0 +1,35 @@
+---
+#installing telegraf
+  - name: download telegraf bin
+    win_copy:
+      src: telegraf-1.8.3_windows_amd64.zip
+      dest: C:\temp\telegraf.zip
+
+  - name: Check if telegraf service is installed
+    win_service:
+      name: telegraf
+    register: service_telegraf
+  
+  - name: stop telegraf service
+    win_service:
+      name: telegraf
+      state: stopped
+    when: service_telegraf.exists
+
+  - name: uzip telegraf
+    win_unzip:
+      src: C:\temp\telegraf.zip
+      dest: C:\Program Files
+    
+  - name: create telegraf folder
+    win_file:
+      path: C:\Program Files\telegraf\telegraf.d
+      state: directory
+  
+  - name: install telegraf service
+    win_command: cmd 
+    args: 
+      stdin: '"C:\Program Files\telegraf\telegraf.exe" --service install --config "C:\Program Files\Telegraf\telegraf.conf" --config-directory "C:\Program Files\Telegraf\telegraf.d"'
+
+
+  #Remove-Item -Path HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\telegraf\
